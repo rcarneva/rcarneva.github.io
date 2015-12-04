@@ -19,7 +19,7 @@ TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
-THEME = "/Users/randycarnevale/work/github/pelican-themes/bootstrap"
+THEME = "pelican-themes/bootstrap"
 
 # Blogroll
 #LINKS = (('Pelican', 'http://getpelican.com/'),
