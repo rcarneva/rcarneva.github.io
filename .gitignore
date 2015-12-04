@@ -2,3 +2,4 @@
 *.pyc
 pelican-themes
 .DS_Store
+render_math
