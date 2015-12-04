@@ -2,60 +2,43 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Data Stuff</title>
-	<meta name="description" content="">
+	<title>Understanding Gradient Boosting, Part 1 — Data Stuff</title>
+	<meta name="description" content="Title: Understanding Gradient Boosting, Part 1; Date: 2015-12-04; Author: Randy Carnevale">
 	<meta name="author" content="Randy Carnevale">
-
-	<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
 	<!--[if lt IE 9]>
 		<script src="/theme/html5.js"></script>
-	<![endif]-->
-
-	<!-- Styles -->
-	<link href="/theme/bootstrap.min.css" rel="stylesheet">
-	<link href="/theme/local.css" rel="stylesheet">
-	<link href="/theme/pygments.css" rel="stylesheet">
-
-	<!-- Feeds -->
-
-
-
-
+		<![endif]-->
+	<link href="/theme/css/ipython.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
+	<link href="/theme/css/local.css" rel="stylesheet">
+	<link href="/theme/css/pygments.css" rel="stylesheet">
 </head>
 <body>
-	<div class="topbar">
-	  <div class="topbar-inner">
-		<div class="container-fluid">
-		  <a class="brand" href="/">Data Stuff</a>
-			<ul class="nav">
-					<li class="active"><a href="/category/modeling.html">Modeling</a></li>
-			</ul>
-			<p class="pull-right"><a href="/archives.html">[archives]</a> <a href="/tags.html">[tags]</a></p>
-		</div>
-	  </div>
+<div class="container">
+	<div class="page-header">
+		<h1><a href="/">Data Stuff</a>
+			<br>	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Understanding Gradient Boosting, Part 1</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Randy Carnevale</h4>
+		</span>
+		<time datetime="2015-12-04T00:00:00-05:00" itemprop="datePublished">Fri 04 December 2015</time>
 	</div>
-
-	<div class="container-fluid">
-	  <div class="sidebar">
-		<div class="well">
-			<h3>Blogroll</h3>
-			<ul>
-			</ul>
-			<div class="social">
-			<h3>Social</h3>
-			<ul>
-			</ul>
-			</div>
-		</div>
-	  </div>
-	  <div class="content">
-	<div class='article'>
-		<div class="page-header"><h1>Understanding Gradient Boosting, Part 1</h1></div>
-		<div class="well small">Permalink: <a class="more" href="/understanding-gradient-boosting-part-1.html">2015-12-04 00:00:00-05:00</a>
-by <a class="url fn" href="/author/randy-carnevale.html">Randy Carnevale </a>
- in <a href="/category/modeling.html">Modeling</a>
-</div>
-		<div><p>Though there are many possible <a href="https://en.wikipedia.org/wiki/Supervised_learning#Approaches_and_algorithms">supervised learning model types</a> to choose from, gradient boosted models (GBMs) are almost always my first choice. In many cases, they end up outperforming other options, and even when they doesn't, it's rare that a properly tuned GBM is far behind the best model.</p>
+	<div>
+		Category:
+		<span itemprop="articleSection">
+			<a href="/category/modeling.html" rel="category">Modeling</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>Though there are many possible <a href="https://en.wikipedia.org/wiki/Supervised_learning#Approaches_and_algorithms">supervised learning model types</a> to choose from, gradient boosted models (GBMs) are almost always my first choice. In many cases, they end up outperforming other options, and even when they doesn't, it's rare that a properly tuned GBM is far behind the best model.</p>
 <p>At a high level, the way GBMs work is by starting with a rough prediction and then building a series of decision trees, with each tree in the series trying to correct the prediction error of the tree before it. There's more detailed descriptions of the mechanics behind the algorithm out there, but this series of posts is intended to give more of an intuitive understanding of what the algorithm does.</p>
 <div class="highlight"><pre><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingClassifier</span>
@@ -245,13 +228,62 @@ by <a class="url fn" href="/author/randy-carnevale.html">Randy Carnevale </a>
 <p><img alt="png" src="gbms_1_files/gbms_1_14_1.png" /></p>
 <p><img alt="png" src="gbms_1_files/gbms_1_14_2.png" /></p>
 <p><em>Code for visualizing decision boundaries modified from <a href="http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html">the excellent scikit-learn documentation</a>.</em></p></div>
+	<hr>
+	<h2>Comments</h2>
+</div>
+		</div>
+	</div> 	<!-- <hr> -->
+</div> <!-- /container -->
+<footer class="aw-footer bg-danger">
+	<div class="container"> <!-- footer -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-3">
+						<h4>Navigation</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="">Data Stuff</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Author</h4>
+						<ul class="list-unstyled my-list-style">
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Categories</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="/category/Modeling.html">Modeling (1)</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-		<footer>
-		  <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme based on <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>.</p>
-		  <p>&copy; Randy Carnevale</p>
-		</footer>
-	  </div>
-
+</footer>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Randy Carnevale 2014</p>
+			<p>Powered by Pelican</p>
+		</div>
 	</div>
+</div>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
 </body>
 </html>

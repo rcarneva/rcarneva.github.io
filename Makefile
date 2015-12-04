@@ -77,6 +77,9 @@ else
 	cd $(OUTPUTDIR) && $(PY) -m pelican.server
 endif
 
+test: html
+	cd $(OUTPUTDIR) && $(PY) -m pelican.server 8001
+
 serve-global:
 ifdef SERVER
 	cd $(OUTPUTDIR) && $(PY) -m pelican.server 80 $(SERVER)
