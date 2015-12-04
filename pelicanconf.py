@@ -21,6 +21,8 @@ AUTHOR_FEED_RSS = None
 
 THEME = "pelican-themes/aboutwilson"
 
+PLUGINS = ["render_math"]
+
 # Blogroll
 #LINKS = (('Pelican', 'http://getpelican.com/'),
 #         ('Python.org', 'http://python.org/'),

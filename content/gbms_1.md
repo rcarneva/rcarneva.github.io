@@ -1,7 +1,7 @@
 Title: Understanding Gradient Boosting, Part 1
 Date: 2015-12-04
 Category: Modeling
-Though there are many possible [supervised learning model types](https://en.wikipedia.org/wiki/Supervised_learning#Approaches_and_algorithms) to choose from, gradient boosted models (GBMs) are almost always my first choice. In many cases, they end up outperforming other options, and even when they doesn't, it's rare that a properly tuned GBM is far behind the best model.
+Though there are many possible [supervised learning model types](https://en.wikipedia.org/wiki/Supervised_learning#Approaches_and_algorithms) to choose from, gradient boosted models (GBMs) are almost always my first choice. In many cases, they end up outperforming other options, and even when they don't, it's rare that a properly tuned GBM is far behind the best model.
 
 At a high level, the way GBMs work is by starting with a rough prediction and then building a series of decision trees, with each tree in the series trying to correct the prediction error of the tree before it. There's more detailed descriptions of the mechanics behind the algorithm out there, but this series of posts is intended to give more of an intuitive understanding of what the algorithm does.
 

@@ -23,7 +23,7 @@
 		<h1><a href="/">Data Stuff</a>
 			<br>	</div>
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
+		<div class="col-md-10 col-md-offset-1">
 <div class="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<div class="text-center article-header">
 		<h1 itemprop="name headline" class="article-title">Understanding Gradient Boosting, Part 1</h1>
@@ -38,7 +38,7 @@
 			<a href="/category/modeling.html" rel="category">Modeling</a>
 		</span>
 	</div>
-	<div itemprop="articleBody" class="article-body"><p>Though there are many possible <a href="https://en.wikipedia.org/wiki/Supervised_learning#Approaches_and_algorithms">supervised learning model types</a> to choose from, gradient boosted models (GBMs) are almost always my first choice. In many cases, they end up outperforming other options, and even when they doesn't, it's rare that a properly tuned GBM is far behind the best model.</p>
+	<div itemprop="articleBody" class="article-body"><p>Though there are many possible <a href="https://en.wikipedia.org/wiki/Supervised_learning#Approaches_and_algorithms">supervised learning model types</a> to choose from, gradient boosted models (GBMs) are almost always my first choice. In many cases, they end up outperforming other options, and even when they don't, it's rare that a properly tuned GBM is far behind the best model.</p>
 <p>At a high level, the way GBMs work is by starting with a rough prediction and then building a series of decision trees, with each tree in the series trying to correct the prediction error of the tree before it. There's more detailed descriptions of the mechanics behind the algorithm out there, but this series of posts is intended to give more of an intuitive understanding of what the algorithm does.</p>
 <div class="highlight"><pre><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingClassifier</span>
@@ -122,11 +122,11 @@
 
 <p><img alt="png" src="gbms_1_files/gbms_1_6_0.png" /></p>
 <h3>GBM parameters</h3>
-<p>Now that we have a dataset to work with, let's consider the parameters GBMs have for us to tweak. Arguably, the most important two are the <strong>number of trees</strong> and the <strong>learning rate</strong>. The former is fairly straightforward: it simply corresponds to the number of trees that will be fit in series to correct the prediction errors. The learning rate corresponds to how quickly the error is corrected from each tree to the next and is a simple multiplier $0 \lt LR \leq 1$. </p>
-<p>For example, if the current prediction for a particular example is $0.2$ and the next tree predicts that it should actually be $0.8$, the correction would be $+0.6$. At a learning rate of $1$, the updated prediction would be the full $0.2 + 1(0.6) = 0.8$, while a learning rate of $0.1$ would update the prediction to be $0.2 + 0.1(0.6) = 0.26$.</p>
+<p>Now that we have a dataset to work with, let's consider the parameters GBMs have for us to tweak. Arguably, the most important two are the <strong>number of trees</strong> and the <strong>learning rate</strong>. The former is fairly straightforward: it simply corresponds to the number of trees that will be fit in series to correct the prediction errors. The learning rate corresponds to how quickly the error is corrected from each tree to the next and is a simple multiplier <span class="math">\(0 \lt LR \leq 1\)</span>. </p>
+<p>For example, if the current prediction for a particular example is <span class="math">\(0.2\)</span> and the next tree predicts that it should actually be <span class="math">\(0.8\)</span>, the correction would be <span class="math">\(+0.6\)</span>. At a learning rate of <span class="math">\(1\)</span>, the updated prediction would be the full <span class="math">\(0.2 + 1(0.6) = 0.8\)</span>, while a learning rate of <span class="math">\(0.1\)</span> would update the prediction to be <span class="math">\(0.2 + 0.1(0.6) = 0.26\)</span>.</p>
 <p>Beyond these two parameters, we can tweak things relating to the model like <strong>subsampling rows</strong> (i.e., including a random portion of the training set at each tree in the series) and <strong>loss function</strong> used to assess performance, as well as things relating to individual trees like <strong>maximum tree depth</strong>, <strong>minimum samples to split a node</strong>, <strong>minimum samples in a leaf node</strong>, and <strong>subsampling features</strong> (i.e., only considering a set of the features when splitting nodes in the tree to provide some extra randomness). These parameters can also have a big impact once you've settled on a decent tree count/learning rate combo, but they tend to be a second step in the process. As a rule of thumb, using some small amount of subsampling (e.g., 80-90% of the data at each step) and keeping trees relatively shallow (max depth between 2-5) tends to be fairly effective in most cases.</p>
 <h3>Why lower learning rates?</h3>
-<p>The multiplicative nature of the learning rate acts at odds with the number of trees: for a learning rate $L$ and a number of trees $t$, if we decrease the learning rate to $\frac{L}{n}$ then we'll need something on the order of $nt$ trees to maintain the same level of performance. Because each tree in a GBM is fit in series, the training time of the model grows linearly with the number of trees (i.e., if it takes you $m$ minutes to fit a model on 100 trees, then it should take roughly $2m$ minutes to fit the same model on 200 trees). Why then would we want to lower the learning rate?</p>
+<p>The multiplicative nature of the learning rate acts at odds with the number of trees: for a learning rate <span class="math">\(L\)</span> and a number of trees <span class="math">\(t\)</span>, if we decrease the learning rate to <span class="math">\(\frac{L}{n}\)</span> then we'll need something on the order of <span class="math">\(nt\)</span> trees to maintain the same level of performance. Because each tree in a GBM is fit in series, the training time of the model grows linearly with the number of trees (i.e., if it takes you <span class="math">\(m\)</span> minutes to fit a model on 100 trees, then it should take roughly <span class="math">\(2m\)</span> minutes to fit the same model on 200 trees). Why then would we want to lower the learning rate?</p>
 <p>To answer that, let's try fitting a few GBMs on our sample data. In each case, we'll use <strong>500 trees</strong> of <strong>maximum depth 3</strong> and use a <strong>90% subsample</strong> of the data at each stage, but we'll do a <strong>low learning rate of 0.05</strong> in one, a <strong>high learning rate of 0.5</strong> in a second, and the <strong>maximum of 1</strong> in the third. After fitting each model, we'll also get the predictions from each tree in the series, as well as the final predictions.</p>
 <div class="highlight"><pre><span class="n">common_args</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;max_depth&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#39;n_estimators&#39;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span> <span class="s">&#39;subsample&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s">&#39;random_state&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
 
@@ -145,7 +145,7 @@
 
 
 <p>First, let's take a look at the effect of the learning rates on the predictions at each stage. The plots below show histograms for predictions on the 18,000 training examples at trees 1, 5, 50, and 100, and the final predictions at tree 500.</p>
-<p>From the tree 1 plot, the effect of the learning rate is immediately apparent. All predictions are initialized to approximately $0.5$ since the target is split roughly in half, and so after 1 tree, each prediction will fall between $0.5-LR$ and $0.5+LR$. Because we are using relatively shallow trees with the max depth set to 3, none of the leaf nodes end up being purely 0s or 1s, however. </p>
+<p>From the tree 1 plot, the effect of the learning rate is immediately apparent. All predictions are initialized to approximately <span class="math">\(0.5\)</span> since the target is split roughly in half, and so after 1 tree, each prediction will fall between <span class="math">\(0.5-LR\)</span> and <span class="math">\(0.5+LR\)</span>. Because we are using relatively shallow trees with the max depth set to 3, none of the leaf nodes end up being purely 0s or 1s, however. </p>
 <p>One other interesting thing to note in the tree 1 plot is that the underlying tree that is constructed is identical in each of the models. You can see this from the identically shaped but differently spaced histograms for the 0.5 and 1.0 learning rate models.</p>
 <p>By tree 50, the higher learning rates have already pushed most of the predictions out to the 0/1 ends of the spectrum, while only the very easiest examples are even starting to approach 0 or 1 in the lower learning rate model. In the final model, all of the models have a set of points for which they are feeling relatively certain, though the lower learning rate model has been a little more conservative than the others.</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">frame</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
@@ -227,7 +227,64 @@
 <p><img alt="png" src="gbms_1_files/gbms_1_14_0.png" /></p>
 <p><img alt="png" src="gbms_1_files/gbms_1_14_1.png" /></p>
 <p><img alt="png" src="gbms_1_files/gbms_1_14_2.png" /></p>
-<p><em>Code for visualizing decision boundaries modified from <a href="http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html">the excellent scikit-learn documentation</a>.</em></p></div>
+<p><em>Code for visualizing decision boundaries modified from <a href="http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html">the excellent scikit-learn documentation</a>.</em></p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script></div>
 	<hr>
 	<h2>Comments</h2>
 </div>
