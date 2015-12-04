@@ -1,9 +1,6 @@
 Title: Understanding Gradient Boosting, Part 1
-Date: 2015-12-03
+Date: 2015-12-04
 Category: Modeling
-
-# Understanding Gradient Boosting, Part 1
-
 Though there are many possible [supervised learning model types](https://en.wikipedia.org/wiki/Supervised_learning#Approaches_and_algorithms) to choose from, gradient boosted models (GBMs) are almost always my first choice. In many cases, they end up outperforming other options, and even when they doesn't, it's rare that a properly tuned GBM is far behind the best model.
 
 At a high level, the way GBMs work is by starting with a rough prediction and then building a series of decision trees, with each tree in the series trying to correct the prediction error of the tree before it. There's more detailed descriptions of the mechanics behind the algorithm out there, but this series of posts is intended to give more of an intuitive understanding of what the algorithm does.
@@ -100,7 +97,7 @@ plt.show()
 ```
 
 
-![png](gbms_1_files/gbms_1_5_0.png)
+![png](gbms_1_files/gbms_1_6_0.png)
 
 
 ### GBM parameters
@@ -170,7 +167,7 @@ plt.show()
 ```
 
 
-![png](gbms_1_files/gbms_1_9_0.png)
+![png](gbms_1_files/gbms_1_10_0.png)
 
 
 ### Model performance
@@ -198,7 +195,7 @@ plt.show()
 ```
 
 
-![png](gbms_1_files/gbms_1_11_0.png)
+![png](gbms_1_files/gbms_1_12_0.png)
 
 
 ### Next up...
@@ -207,7 +204,7 @@ In this post, we've gone through some of the mechanical aspects and consideratio
 
 
 ```python
-def gen_plot(mname, model, xlim=(-4, 4), ylim=(-4, 4), gridsize=0.02, marker="+"):
+def gen_plot(mname, model, xlim=(-4, 4), ylim=(-4, 4), gridsize=0.02, marker="."):
     xx, yy = np.meshgrid(np.arange(xlim[0], xlim[1], gridsize),
                          np.arange(ylim[0], ylim[1], gridsize))
     plt.xlim(*xlim)
@@ -218,31 +215,31 @@ def gen_plot(mname, model, xlim=(-4, 4), ylim=(-4, 4), gridsize=0.02, marker="+"
     plt.scatter(raw_data[:,0], raw_data[:,1], c=raw_target, alpha=0.8, marker=marker, cmap=my_cm)
 
 for mname, model in models:
-    plt.figure(figsize=(24,6))
+    plt.figure(figsize=(16,4))
     plt.subplot(1,3,1)
-    gen_plot("%s: full view" % mname, model, gridsize=0.02)
+    gen_plot("%s: full view" % mname, model)
     plt.axhspan(-2, 2, 0.125, 0.375, fill=False, lw=1.5)
     
     plt.subplot(1,3,2)
-    gen_plot("%s: detailed view" % mname, model, (-3, -1), (-2, 2), 0.005, "o")
+    gen_plot("%s: detailed view" % mname, model, (-3, -1), (-2, 2), 0.005)
     plt.axhspan(-1, 0, 0.5, 0.75, fill=False, lw=1.5)
     
     plt.subplot(1,3,3)
-    gen_plot("%s: extreme closeup" % mname, model, (-2, -1.5), (-1, 0), 0.00125, "o")
+    gen_plot("%s: extreme closeup" % mname, model, (-2, -1.5), (-1, 0), 0.00125)
 
     plt.show()
 ```
 
 
-![png](gbms_1_files/gbms_1_13_0.png)
+![png](gbms_1_files/gbms_1_14_0.png)
 
 
 
-![png](gbms_1_files/gbms_1_13_1.png)
+![png](gbms_1_files/gbms_1_14_1.png)
 
 
 
-![png](gbms_1_files/gbms_1_13_2.png)
+![png](gbms_1_files/gbms_1_14_2.png)
 
 
 *Code for visualizing decision boundaries modified from [the excellent scikit-learn documentation](http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html).*
